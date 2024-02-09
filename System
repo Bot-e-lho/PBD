@@ -1,7 +1,7 @@
 CREATE TABLE Administrador (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
-    email VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
     senha VARCHAR(100)
 );
 
@@ -17,9 +17,9 @@ CREATE TABLE Hotel (
 
 CREATE TABLE Usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    cpf VARCHAR(14),
+    cpf VARCHAR(14) UNIQUE,
     nome VARCHAR(100),
-    email VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
     senha VARCHAR(100)
 );
 
@@ -28,26 +28,35 @@ CREATE TABLE CategoriaQuarto (
     nome VARCHAR(50),
     descricao TEXT,
     restricoes TEXT,
-    disponibilidade BOOLEAN,
     preco DECIMAL(10,2)
+);
+
+CREATE TABLE Quarto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_categoria INT,
+    disponibilidade BOOLEAN,
+    FOREIGN KEY (id_categoria) REFERENCES CategoriaQuarto(id)
 );
 
 CREATE TABLE Reserva (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
     id_hotel INT,
-    id_categoria_quarto INT,
+    id_quarto INT,
     preco DECIMAL(10,2),
     numero_quarto INT,
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
     FOREIGN KEY (id_hotel) REFERENCES Hotel(id),
-    FOREIGN KEY (id_categoria_quarto) REFERENCES CategoriaQuarto(id)
+    FOREIGN KEY (id_quarto) REFERENCES Quarto(id)
 );
 
 CREATE TABLE ComentarioAvaliacao (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
+    id_hotel INT,
     pontuacao DECIMAL(3,2),
     texto_comentario TEXT,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
+    data_comentario DATE,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
+    FOREIGN KEY (id_hotel) REFERENCES Hotel(id)
 );
