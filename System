@@ -2,17 +2,7 @@ CREATE TABLE Administrador (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    senha VARCHAR(100)
-);
-
-CREATE TABLE Hotel (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    categoria VARCHAR(50),
-    localizacao VARCHAR(100),
-    titulo VARCHAR(100),
-    descricao TEXT,
-    classificacao DECIMAL(3,2),
-    imagens TEXT
+    senha_hash VARCHAR(256)
 );
 
 CREATE TABLE Usuario (
@@ -20,7 +10,7 @@ CREATE TABLE Usuario (
     cpf VARCHAR(14) UNIQUE,
     nome VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    senha VARCHAR(100)
+    senha_hash VARCHAR(256)
 );
 
 CREATE TABLE CategoriaQuarto (
@@ -33,20 +23,20 @@ CREATE TABLE CategoriaQuarto (
 
 CREATE TABLE Quarto (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    id_hotel INT,
     id_categoria INT,
     disponibilidade BOOLEAN,
-    FOREIGN KEY (id_categoria) REFERENCES CategoriaQuarto(id)
+    FOREIGN KEY (id_categoria) REFERENCES CategoriaQuarto(id),
+    FOREIGN KEY (id_hotel) REFERENCES Hotel(id)
 );
 
 CREATE TABLE Reserva (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
-    id_hotel INT,
     id_quarto INT,
     preco DECIMAL(10,2),
     numero_quarto INT,
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
-    FOREIGN KEY (id_hotel) REFERENCES Hotel(id),
     FOREIGN KEY (id_quarto) REFERENCES Quarto(id)
 );
 
@@ -61,23 +51,30 @@ CREATE TABLE ComentarioAvaliacao (
     FOREIGN KEY (id_hotel) REFERENCES Hotel(id)
 );
 
-INSERT INTO Administrador (nome, email, senha)
-VALUES ('Nome do Administrador', 'email@exemplo.com', 'senha');
+CREATE TABLE Imagens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_hotel INT,
+    url_imagem TEXT,
+    FOREIGN KEY (id_hotel) REFERENCES Hotel(id)
+);
 
-INSERT INTO Hotel (categoria, localizacao, titulo, descricao, classificacao, imagens)
-VALUES ('Categoria do Hotel', 'Localização do Hotel', 'Título do Hotel', 'Descrição do Hotel', 4.5, 'URL da imagem');
+INSERT INTO Administrador (nome, email, senha_hash)
+VALUES ('Ana Pernas', 'melo@gitgit.com', 'hash_da_senha');
 
-INSERT INTO Usuario (cpf, nome, email, senha)
-VALUES ('12345678901', 'Nome do Usuário', 'usuario@exemplo.com', 'senha');
+INSERT INTO Usuario (cpf, nome, email, senha_hash)
+VALUES ('12345678901', 'Shaolin', 'bot@gitgit.com', 'hash_da_senha');
 
 INSERT INTO CategoriaQuarto (nome, descricao, restricoes, preco)
 VALUES ('Categoria do Quarto', 'Descrição da Categoria', 'Restrições do Quarto', 100.00);
 
-INSERT INTO Quarto (id_categoria, disponibilidade)
-VALUES (1, TRUE);
+INSERT INTO Quarto (id_hotel, id_categoria, disponibilidade)
+VALUES (1, 1, TRUE);
 
-INSERT INTO Reserva (id_usuario, id_hotel, id_quarto, preco, numero_quarto)
-VALUES (1, 1, 1, 100.00, 101);
+INSERT INTO Reserva (id_usuario, id_quarto, preco, numero_quarto)
+VALUES (1, 1, 100.00, 101);
 
 INSERT INTO ComentarioAvaliacao (id_usuario, id_hotel, pontuacao, texto_comentario, data_comentario)
 VALUES (1, 1, 4.5, 'Excelente hotel, recomendo!', '2024-02-17');
+
+INSERT INTO Imagens (id_hotel, url_imagem)
+VALUES (1, 'URL da imagem');
