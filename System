@@ -60,3 +60,24 @@ CREATE TABLE ComentarioAvaliacao (
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
     FOREIGN KEY (id_hotel) REFERENCES Hotel(id)
 );
+
+INSERT INTO Administrador (nome, email, senha)
+VALUES ('Nome do Administrador', 'email@exemplo.com', 'senha');
+
+INSERT INTO Hotel (categoria, localizacao, titulo, descricao, classificacao, imagens)
+VALUES ('Categoria do Hotel', 'Localização do Hotel', 'Título do Hotel', 'Descrição do Hotel', 4.5, 'URL da imagem');
+
+INSERT INTO Usuario (cpf, nome, email, senha)
+VALUES ('12345678901', 'Nome do Usuário', 'usuario@exemplo.com', 'senha');
+
+INSERT INTO CategoriaQuarto (nome, descricao, restricoes, preco)
+VALUES ('Categoria do Quarto', 'Descrição da Categoria', 'Restrições do Quarto', 100.00);
+
+INSERT INTO Quarto (id_categoria, disponibilidade)
+VALUES (1, TRUE);
+
+INSERT INTO Reserva (id_usuario, id_hotel, id_quarto, preco, numero_quarto)
+VALUES (1, 1, 1, 100.00, 101);
+
+INSERT INTO ComentarioAvaliacao (id_usuario, id_hotel, pontuacao, texto_comentario, data_comentario)
+VALUES (1, 1, 4.5, 'Excelente hotel, recomendo!', '2024-02-17');
