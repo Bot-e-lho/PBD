@@ -21,6 +21,16 @@ CREATE TABLE CategoriaQuarto (
     preco DECIMAL(10,2)
 );
 
+CREATE TABLE Hotel (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    categoria VARCHAR(50),
+    localizacao VARCHAR(100),
+    titulo VARCHAR(100),
+    descricao TEXT,
+    classificacao DECIMAL(3,2)
+);
+
+
 CREATE TABLE Quarto (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_hotel INT,
